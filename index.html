@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Learning Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--teal:#0f7a6b;--navy:#14264a;--orange:#f6a21e;--soft:#f4f8f7;--text:#5b6575;--edge:max(16px,calc((100vw - 1140px)/2 + 16px))}
+        html{scroll-behavior:smooth}
+        body{font-family:'Roboto',sans-serif;color:var(--text);background:var(--soft)}
+        h1,h2,h3,h4{font-family:'Poppins',sans-serif;color:var(--navy);font-weight:700}
+        a{color:var(--teal)} a:hover{color:var(--orange)}
+
+        /* HERO */
+        .main-header{position:relative;padding:110px 0 170px;color:#fff;border-bottom:8px solid var(--orange);
+            background:linear-gradient(90deg,rgba(20,38,74,.95) 0%,rgba(20,38,74,.7) 55%,rgba(20,38,74,.35) 100%),
+            url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&q=70') center/cover}
+        .header-content{max-width:1140px;margin:0 auto;padding:0 16px;position:relative;z-index:2}
+        .header-content h1{color:#fff;font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.2;max-width:560px}
+        .header-content p{color:var(--orange);font-weight:600;font-size:1.2rem;margin-top:1rem}
+        .main-header::before,.main-header::after{content:"";position:absolute;background-size:cover;background-position:center;box-shadow:0 14px 34px rgba(0,0,0,.35)}
+        .main-header::after{width:270px;height:270px;border-radius:50%;border:8px solid #fff;top:60px;right:calc(var(--edge) + 30px);
+            background-image:url('https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=70')}
+        .main-header::before{width:170px;height:210px;border-radius:50px 20px 50px 20px;border:6px solid #fff;top:170px;right:calc(var(--edge) + 290px);z-index:1;
+            background-image:url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500&q=70')}
+        @media(max-width:991px){.main-header::before,.main-header::after{display:none}}
+
+        /* GRID OF CARDS */
+        .content-wrapper{max-width:1140px;margin:-90px auto 0;padding:0 16px 70px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:28px;counter-reset:card;position:relative;z-index:3}
+        .card{grid-column:span 3;counter-increment:card;position:relative;display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-content:start;
+            background:#fff;border:0;border-top:5px solid var(--teal);border-radius:28px 28px 28px 8px;padding:28px;box-shadow:0 12px 35px rgba(20,38,74,.1)}
+        .card:nth-child(3),.card:nth-child(11){grid-column:span 6}
+        .card:nth-child(8),.card:nth-child(9),.card:nth-child(10){grid-column:span 2}
+        @media(max-width:991px){.card,.card:nth-child(n){grid-column:span 6}}
+        .card::before{content:counter(card,decimal-leading-zero);position:absolute;top:16px;right:22px;font:700 1.6rem 'Poppins',sans-serif;line-height:1;color:#d8e3e1}
+        .card>*{grid-column:1/-1}
+        .card .card-header-icon{grid-column:1;width:56px;height:56px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 0 6px #fff3de;margin-bottom:14px}
+        .card .card-header-text{grid-column:2;align-self:center;margin-bottom:14px;padding-right:58px}
+        .card-header-text h2{font-size:1.3rem;line-height:1.3;margin:0;display:inline}
+        .card-header-text::after{content:"▾";color:var(--teal);margin-left:.5rem;display:inline-block;transition:transform .25s}
+        .card.is-closed .card-header-text::after{transform:rotate(-90deg)}
+        .card-header-icon,.card-header-text{cursor:pointer}
+        .card h3{font-size:1.1rem;margin:1.1rem 0 .5rem}
+        .card h4{font-size:1.05rem}
+        .card p{margin-bottom:1rem}
+        code{color:#d6336c;font-size:.875em}
+
+        /* code blocks */
+        .code-example{position:relative;background:var(--navy);border-radius:16px;margin:1rem 0;overflow:hidden}
+        .code-label{display:inline-block;background:var(--orange);color:#fff;font-size:.75rem;font-weight:700;padding:.25rem 1rem;border-radius:0 0 14px 0}
+        .code-example pre{margin:0;padding:1rem 1.2rem;color:#d7e3ff;font-size:.85rem;white-space:pre-wrap;word-break:break-word}
+        .code-example code{color:#d7e3ff}
+        .copy-btn{position:absolute;top:.5rem;right:.7rem;background:transparent;border:1px solid #5e7099;color:#d7e3ff;border-radius:8px;font-size:.75rem;padding:.1rem .6rem}
+        .copy-btn:hover{background:var(--teal);border-color:var(--teal)}
+        .code-block-header{background:var(--teal);color:#fff;font-family:'Poppins',sans-serif;font-weight:600;padding:.55rem 1.2rem;border-radius:14px 14px 0 0;margin-top:1rem}
+        .code-block-content{background:var(--soft);border:1px solid #dbe7e4;border-top:0;border-left:5px solid var(--orange);border-radius:0 0 14px 14px;padding:1rem 1.2rem .2rem;margin-bottom:1rem}
+        .code-block-content ul{padding-left:1.1rem}
+        .Key-Points{background:var(--soft);border-left:5px solid var(--orange);border-radius:0 16px 16px 0;padding:1rem 1.3rem;margin:1rem 0}
+        .Key-Points h3{margin-top:0}
+        .Key-Points ul,.Key-Points ol{padding-left:1.2rem;margin-bottom:0}
+        .Key-Points li{margin-bottom:.35rem}
+
+        /* tables */
+        .styled-table,.data-table{width:100%;border-collapse:separate;border-spacing:0;border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px #e3ecea;margin:1rem 0}
+        .card .styled-table th,.card .data-table th{background:var(--teal);color:#fff;padding:.85rem 1rem;border:0;font-weight:600}
+        .card .styled-table td,.card .data-table td{padding:.75rem 1rem;border-bottom:1px solid #e9f0ee}
+        .styled-table tbody tr:hover td,.data-table tbody tr:hover td{background:#fff3de}
+        @media(max-width:575px){.styled-table,.data-table{display:block;overflow-x:auto}}
+
+        /* live examples & form */
+        .live-example-block{background:var(--soft);border:2px dashed rgba(15,122,107,.35);border-radius:18px;padding:1.2rem 1.4rem;margin:1rem 0}
+        .live-example-block h1{font-size:1.8rem} .live-example-block h2{font-size:1.45rem} .live-example-block h3{font-size:1.2rem;margin-top:0}
+        .live-example-block h4{font-size:1rem;margin-top:1rem}
+        .sample-form label{display:block;font-weight:500;color:var(--navy);margin:.8rem 0 .3rem}
+        .sample-form .form-control,.sample-form .form-select{border-radius:12px;padding:.65rem 1rem}
+        .sample-form .form-control:focus,.sample-form .form-select:focus{border-color:var(--teal);box-shadow:0 0 0 .2rem rgba(15,122,107,.2)}
+        .submit-btn,.result-btn{background:var(--orange);color:#fff;border:0;border-radius:50px;padding:.65rem 1.7rem;font-weight:600;margin-top:1rem;transition:.25s}
+        .submit-btn:hover,.result-btn:hover{background:var(--navy);transform:translateY(-2px)}
+
+        /* congratulation */
+        .card.congratulation-card{border-top-color:var(--orange);color:#e8eef9;
+            background:linear-gradient(120deg,rgba(20,38,74,.96),rgba(15,122,107,.85)),url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=70') center/cover}
+        .congratulation-card h2,.congratulation-card strong{color:#fff}
+        .congratulation-card::before{color:rgba(255,255,255,.22)}
+        .congratulation-card .card-header-icon{box-shadow:0 0 0 6px rgba(255,255,255,.18)}
+        .congratulation-card .card-header-text::after{color:#fff}
+
+        /* TOP BAR, NAVBAR, HERO SLIDER, FEATURE CARDS (dibuat lewat JS) */
+        html{scroll-padding-top:90px}
+        .topbar{background:var(--teal);color:#fff;font-size:.85rem}
+        .topbar a{color:#fff;text-decoration:none}
+        .topbar .follow{background:var(--orange);padding:.55rem 2.2rem .55rem 1.4rem;display:inline-block;clip-path:polygon(0 0,100% 0,92% 100%,0 100%)}
+        .topbar .soc{width:26px;height:26px;border-radius:50%;background:#fff;color:var(--teal)!important;display:inline-flex;align-items:center;justify-content:center;margin-left:.3rem;font-size:.75rem}
+        .site-nav{background:#fff;box-shadow:0 4px 18px rgba(20,38,74,.08)}
+        .site-nav .navbar-brand{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.8rem;color:var(--teal)}
+        .site-nav .navbar-brand span{color:var(--orange)}
+        .site-nav .nav-link{font-weight:500;color:var(--navy)}
+        .site-nav .nav-link:hover,.site-nav .nav-link.active{color:var(--orange)}
+        .btn-orange{background:var(--orange);color:#fff;border-radius:50px;padding:.6rem 1.6rem;font-weight:600;border:0;transition:.25s}
+        .btn-orange:hover{background:var(--navy);color:#fff;transform:translateY(-2px)}
+        .btn-white{background:#fff;color:var(--navy);border-radius:50px;padding:.6rem 1.6rem;font-weight:600;border:0}
+        .btn-white:hover{background:var(--orange);color:#fff}
+        .main-header::before,.main-header::after{display:none}
+        .main-header{display:flex;align-items:center;min-height:540px;padding:60px 0 150px;border-bottom:0;
+            background:linear-gradient(90deg,rgba(20,38,74,.94) 0%,rgba(20,38,74,.62) 55%,rgba(20,38,74,.25) 100%),url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1600&q=70') center/cover}
+        .header-content{width:100%}
+        #heroCarousel{position:absolute;inset:0;z-index:1}
+        #heroCarousel .carousel-inner,#heroCarousel .carousel-item{height:100%}
+        #heroCarousel .carousel-item{background-size:cover;background-position:center}
+        #heroCarousel .carousel-item::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,38,74,.94) 0%,rgba(20,38,74,.62) 55%,rgba(20,38,74,.25) 100%)}
+        .hero-caption{position:relative;z-index:2;max-width:1140px;height:100%;margin:0 auto;padding:0 16px 100px;display:flex;flex-direction:column;justify-content:center;color:#fff}
+        .hero-caption>*{max-width:600px}
+        .hero-caption .tag{color:var(--orange);font-weight:700;margin-bottom:.8rem}
+        .hero-caption h1{color:#fff;font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.2}
+        .hero-caption p{color:#fff;font-size:1.05rem;margin:1rem 0 1.5rem}
+        #heroCarousel .carousel-control-prev,#heroCarousel .carousel-control-next{width:auto;opacity:1;top:50%;bottom:auto;transform:translateY(-70%);margin:0 18px;z-index:3}
+        #heroCarousel .carousel-control-prev-icon,#heroCarousel .carousel-control-next-icon{width:46px;height:46px;border-radius:50%;background-color:rgba(255,255,255,.25);background-size:42%;transition:.25s}
+        #heroCarousel .carousel-control-prev:hover span,#heroCarousel .carousel-control-next:hover span{background-color:var(--orange)}
+        .feature-strip{position:relative;z-index:5;margin-top:-90px;padding:0 16px}
+        .feature-strip .row-f{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+        @media(max-width:991px){.feature-strip .row-f{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        .feature-card{background:#fff;border-radius:28px 28px 28px 8px;padding:1.5rem;box-shadow:0 12px 35px rgba(20,38,74,.14);position:relative;transition:.3s}
+        .feature-card:hover{transform:translateY(-8px);background:var(--teal)}
+        .feature-card:hover h5,.feature-card:hover p,.feature-card:hover .num{color:#fff}
+        .feature-card .ico{width:54px;height:54px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1rem}
+        .feature-card:hover .ico{background:var(--orange)}
+        .feature-card h5{font-family:'Poppins',sans-serif;color:var(--navy);font-weight:700;font-size:1.1rem}
+        .feature-card p{font-size:.88rem;margin:0}
+        .feature-card .num{position:absolute;top:1rem;right:1.4rem;font:700 2rem 'Poppins',sans-serif;color:#d8e3e1}
+        .feature-strip+.content-wrapper{margin-top:50px}
+        .collage{grid-column:1/-1;position:relative;display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px;align-items:center;margin-bottom:22px}
+        .collage img{width:100%;object-fit:cover;cursor:zoom-in;transition:transform .4s;box-shadow:0 10px 26px rgba(20,38,74,.18)}
+        .collage img:hover{transform:scale(1.05)}
+        .collage .c1{height:220px;border-radius:50px 20px 50px 20px}
+        .collage .c2{aspect-ratio:1;border-radius:50%;border:6px solid #fff}
+        .collage .c3{height:150px;border-radius:20px 50px 20px 50px}
+        .collage .badge-y{position:absolute;left:12px;bottom:-12px;background:var(--orange);color:#fff;font-weight:600;font-size:.85rem;padding:.55rem 1rem;border-radius:16px;box-shadow:0 8px 20px rgba(246,162,30,.45)}
+        .photo-wrap{grid-column:1/-1;overflow:hidden;border-radius:18px;margin-bottom:18px;position:relative}
+        .photo-wrap img{width:100%;height:170px;object-fit:cover;display:block;cursor:zoom-in;transition:transform .5s}
+        .photo-wrap:hover img{transform:scale(1.07)}
+        .photo-wrap::after{content:"🔍 Klik untuk perbesar";position:absolute;right:10px;bottom:10px;background:rgba(20,38,74,.75);color:#fff;font-size:.72rem;padding:.2rem .6rem;border-radius:20px;pointer-events:none;opacity:0;transition:.3s}
+        .photo-wrap:hover::after{opacity:1}
+        .stats-band{position:relative;padding:75px 16px;background:linear-gradient(rgba(15,122,107,.92),rgba(15,122,107,.92)),url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&q=70') center/cover}
+        .stats-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;text-align:center;color:#fff}
+        @media(max-width:767px){.stats-inner{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        .stat-ico{width:68px;height:68px;border-radius:50% 50% 50% 12px;background:var(--orange);display:inline-flex;align-items:center;justify-content:center;font-size:1.7rem;margin-bottom:.7rem}
+        .stat-num{font:700 2.5rem 'Poppins',sans-serif;line-height:1.1}
+        #lightbox .modal-content{background:transparent;border:0}
+        #lightbox img{width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+        /* elemen yang dibuat lewat JS */
+        #scrollBar{position:fixed;top:0;left:0;height:4px;width:0;background:var(--orange);z-index:2000}
+        #toTop{position:fixed;right:20px;bottom:20px;width:46px;height:46px;border-radius:50%;background:var(--orange);color:#fff;border:0;display:none;z-index:1000;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+        @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+    </style>
+</head>
+<body>
+    <div class="page-container">
+    <header class="main-header">
+        <div class="header-content">
+        <h1> 🌐 HTML Learning Project</h1>
+        <p>Master the Building Blocks of the Web</p>
+        </div>
+    </header>
+
+    <main class="content-wrapper">
+        <section class="card">
+            <div class="card-header-icon">🚀</div>
+            <div class="card-header-text">
+            <h2> What is HTML?</h2>
+            </div>
+            <p>
+                <strong>HTML (HyperText Markup Language)</strong> is the standard markup language for creating web pages. Think of it as the skeleton or foundation of every website you visit.
+            </p>
+            <div class="code-block-header">Key-Points</div>
+            <div class="code-block-content">
+               
+                <ul>
+                    <li><strong>HyperText:</strong> Text with links to other texts</li>
+                    <li><strong>Markup:</strong> A way to annotate text to show structure and meaning</li>
+                    <li><strong>Language:</strong> A set of rules and syntax for creating web content</li>
+                </ul>
+            </div>
+            <h3>🏗️ How HTML Works</h3>
+            <p>
+                HTML uses <strong>tags</strong> to define elements. Tags are keywords surrounded by angle brackets like <code>&lt;tagname&gt;</code>. Most tags come in pairs:
+            </p>
+            <div class="code-example">
+                <div class="code-label">HTML</div>
+            <pre><code>&lt;tagname&gt;Content goes here&lt;/tagname&gt; &lt;h1&gt;This is a heading&lt;/h1&gt; &lt;p&gt;This is a paragraph&lt;/p&gt;</code></pre>
+            </div>
+            </section>
+           
+            <!-- Section basic html structure-->
+             <section class="card">
+                <div class="card-header-icon">📋</div>
+                <div class="card-header-text">
+                <h2> Basic HTML Structure</h2>
+                </div>
+                <p>Every HTML document follows this basic structure:</p>
+                <div class="code-example">
+                <div class="code-label">HTML</div>
+                <pre><code>
+&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;meta name="viewport" content="width=device-width, 
+initial-scale=1.0"&gt;&lt;title&gt;Page Title&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Welcome to My Website&lt;/h1&gt;
+&lt;p&gt;This is my first paragraph.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                </code></pre>
+                </div>
+
+                <div class="code-block-header structure-breakdown-header">Structure Breakdown:</div>
+                <div class="code-block-content structure-breakdown-content">
+                    <ul>
+                        <li>&lt;!DOCTYPE html&gt; - Tells the browser this is HTML5</li>
+                        <li>&lt;html&gt; - Root element of the page</li>
+                        <li>&lt;head&gt; - Contains metadata (not visible on page)</li>
+                        <li>&lt;body&gt; - Contains visible content</li>
+                    </ul>
+                </div>
+             </section>
+
+             <!-- Section essential html tags -->
+              <section class="card">
+                <div class="card-header-icon">🏷️</div>
+                <div class="card-header-text">
+                <h2> Essential HTML Tags</h2>
+                </div>
+
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th>Purpose</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+
+                <tbody>
+                    <tr>
+                        <td><code>&lt;h1&gt;</code> - <code>&lt;h6&gt;</code></td>
+                        <td>Headings (Largest to smallest)</td>
+                        <td><code>&lt;h1&gt;Main Title&lt;/h1&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;p&gt;</code></td>
+                        <td>Paragraphs</td>
+                        <td><code>&lt;p&gt;This is text&lt;/p&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;a&gt;</code></td>
+                        <td>Links</td>
+                        <td><code>&lt;a href="url"&gt;Link text&lt;/a&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;img&gt;</code></td>
+                        <td>Images</td>
+                        <td><code>&lt;img src="image.jpg" alt="Description"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;div&gt;</code></td>
+                        <td>Container/section</td>
+                        <td><code>&lt;div&gt;Content here&lt;/div&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;ul&gt;</code> , <code>&lt;ol&gt;</code> , <code>&lt;li&gt;</code></td>
+                        <td>Lists</td>
+                        <td><code>&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;</code></td>
+                    </tr>
+                </tbody>
+                </table>
+
+                <h3>🎯 Live Examples:</h3>
+                <div class="live-example-block">
+                    <h1 style="text-align: center;">This is an H1 Heading</h1>
+                    <h2 style="margin: 0;">This is an H2 Heading</h2>
+                    <h3>This is an H3 Heading</h3>
+                    <p>This is a paragraph with <strong>bold text</strong> and <em>italic text</em>.</p>
+                    <p>Here's a <a href="#">Sample link</a></p>
+
+                    <h4>Unordered List:</h4>
+                    <ul>
+                        <li>First Item</li>
+                        <li>Second Item</li>
+                        <li>Third Item</li>
+                    </ul>
+
+                    <h4>Ordered List:</h4>
+                    <ol>
+                        <li>Step One</li>
+                        <li>Step Two</li>
+                        <li>Step Three</li>
+                    </ol>
+                </div>
+              </section>
+
+              <!-- Section HTML Forms-->
+               <section class="card">
+                <div class="card-header-icon">📝</div>
+                <div class="card-header-text">
+                <h2> HTML Forms</h2>
+                </div>
+                <p>Forms allow users to input data. Here's a working example</p>
+                <div class="code-example">
+                <div class="code-label">HTML</div>
+                <pre><code>&lt;form&gt;
+    &lt;label for="name"&gt;Name:&lt;/label&gt;
+    &lt;input type="text" id="name" name="name"&gt;
+    
+    &lt;label for="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="email" id="email" name="email"&gt;
+    
+    &lt;label for="message"&gt;Message:&lt;/label&gt;
+    &lt;textarea id="message" name="message"&gt;&lt;/textarea&gt;
+    
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+                </code></pre>
+                </div>
+
+                <div class="live-example-block">
+                    <h3>Try this form</h3>
+                    <form class="sample-form">
+                        <label for="name">Name</label>
+                         <input type="text" id="name" name="name" placeholder="Enter your name">
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email">
+
+                        <label for="subject">Subject:</label>
+                        <select id="subject" name="subject">
+                        <option value="">Choose a topic...</option>
+                        <option value="question">Question</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="support">Support</option>
+                        </select>
+
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" placeholder="Type your message here..."></textarea>
+
+                        <button class="submit-btn">Submit Form</button>
+                    </form>
+                </div>
+               </section>
+
+               <!-- Section HTML Atributtes-->
+                <section class="card">
+                <div class="card-header-icon">🎨</div>
+                <div class="card-header-text">
+                    <h2> HTML Attributes</h2>
+                </div>
+                    <p>Attributes provide additional information about HTML elements:</p>
+                    <div class="code-example">
+                    <div class="code-label">HTML</div>
+                    <pre><code>
+&lt;!-- Common attributes --&gt;&lt;img src="photo.jpg" alt="A beautiful sunset" width="300" height="200"&gt;
+&lt;a href="https://example.com" target="_blank" title="Visit Example"&gt;Click here&lt;/a&gt;
+&lt;div class="container" id="main-content" style="color: blue;"&gt;Content&lt;/div&gt;
+                    </code></pre>
+                    </div>
+
+                    <div class="Key-Points">
+                        <h3>Important Attributes:</h3>
+                        <ul>
+                            <li><strong>id</strong> - Unique identifier for an element</li>
+                            <li><strong>class</strong> - Groups elements for styling</li>
+                            <li><strong>src</strong> - Source file for images, videos, etc.</li>
+                            <li><strong>href</strong> - URL for links</li>
+                            <li><strong>alt</strong> - Alternative text for images</li>
+                            <li><strong>style</strong> - Inline CSS styling</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Section Table in HTML-->
+                 <section class="card">
+                <div class="card-header-icon">📊</div>
+                <div class="card-header-text">
+                    <h2> Tables in HTML</h2>
+                </div>
+                    <p>Tables organize data in rows and columns:</p>
+                    <div class="code-example">
+                    <div class="code-label">HTML</div>
+                    <pre><code>
+&lt;table&gt;&lt;thead&gt;&lt;tr>&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;th&gt;City&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;John&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;td&gt;New York&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+                    </code></pre>
+                    </div>
+                    <h4><strong>Sample Table</strong></h4>
+                   
+                    <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Subject</th>
+                            <th>Grade</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>Alice Johnshon</td>
+                        <td>Matematics</td>
+                        <td>A+</td>
+                        <td>✅ Passed</td>
+                    </tr>
+                    <tr>
+                        <td>Bob Smith</td>
+                        <td>Physics</td>
+                        <td>B</td>
+                        <td>✅ Passed</td>
+                    </tr>
+                    <tr>
+                        <td>Carol Davis</td>
+                        <td>Chemistry</td>
+                        <td>A</td>
+                        <td>✅ Passed</td>
+                    </tr>
+                    </tbody>
+                    </table>
+                 </section>
+
+                 <!--Section Practices Exercises-->
+                 <section class="card">
+                <div class="card-header-icon">💻</div>
+                <div class="card-header-text">
+                    <h2> Practice Exercises</h2>
+                </div>
+                    <div class="Key-Points">
+                        <h3>Beginner Tasks:</h3>
+                        <ol>
+                            <li>Create a basic HTML page with a title, heading, and paragraph</li>
+                            <li>Add an image with alt text</li>
+                            <li>Create a list of your favorite movies</li>
+                            <li>Build a simple table with your weekly schedule</li>
+                        </ol>
+                    </div>
+                    <div class="Key-Points">
+                    <h3>Intermediate Tasks:</h3>
+                        <ol>
+                            <li>Create a contact form with different input types</li>
+                            <li>Build a navigation menu with links</li>
+                            <li>Design a simple blog post layout</li>
+                            <li>Create a photo gallery grid</li>
+                        </ol>
+                    </div>
+                        <a href="/practice_exercises/index.html">
+                            <button class="result-btn">See The Result</button>
+                        </a>
+                 </section>
+
+                 <!--Section Project Structure-->
+                 <section class="card">
+                    <div class="card-header-icon">🗂️</div>
+                    <div class="card-header-text">
+                    <h2> Project Structure</h2>
+                    </div>
+                    <p>Here's how to organize your HTML project:</p>
+                    <div class="code-example">
+                    <pre><code>
+my-website/
+│
+├── index.html        (Main page)
+├── about.html        (About page)
+├── contact.html      (Contact page)
+│
+├── css/
+│   └── styles.css    (CSS stylesheets)
+│
+├── js/
+│   └── script.js     (JavaScript files)
+│
+└── images/
+    ├── logo.png
+    ├── hero-image.jpg
+    └── gallery/
+        ├── photo1.jpg
+        └── photo2.jpg
+                    </code></pre>
+                    </div>
+                 </section>
+
+                 <!-- Section Next Steps in Your Learning Journey-->
+                  <section class="card">
+                    <div class="card-header-icon">🎯</div>
+                    <div class="card-header-text">
+                    <h2> Next Steps in Your Learning Journey</h2>
+                    </div>
+                    <p>After mastering HTML, continue with:</p>
+
+                    <div class="Key-Points">
+                        <ul>
+                            <li><strong>CSS (Cascading Style Sheets)</strong> - Style your HTML elements</li>
+                            <li><strong>JavaScript</strong> - Add interactivity and dynamic behavior</li>
+                            <li><strong>Responsive Design</strong> - Make websites work on all devices</li>
+                            <li><strong>Web Accessibility</strong> - Make websites usable for everyone</li>
+                            <li><strong>Modern Frameworks</strong> - React, Vue.js, or Angular</li>
+                        </ul>
+                    </div>
+                  </section>
+
+                  <!--Section Development Tools-->
+                  <section class="card">
+                    <div class="card-header-icon">🔧</div>
+                    <div class="card-header-text">
+                    <h2> Development Tools</h2>
+                    </div>
+
+                    <div class="Key-Points">
+                        <h3>Recommended Tools:</h3>
+                        <ul>
+                            <li><strong>Text Editors:</strong> VS Code, Sublime Text, Atom</li>
+                            <li><strong>Browser</strong>Chrome DevTools, Firefox Developer Tools</li>
+                            <li><strong>Version Control:</strong> Git and GitHub</li>
+                            <li><strong>Online Editors:</strong> CodePen, JSFiddle, Repl.it</li>
+                        </ul>
+                    </div>
+                  </section>
+
+
+                  <!-- Section Congratulation-->
+                   <section class="card congratulation-card">
+                    <div class="card-header-icon">🎉</div>
+                    <div class="card-header-text">
+                    <h2>Congratulations!</h2>
+                    </div>
+                    <p>You've completed the HTML Learning Project! You now understand the fundamentals of HTML and can create your own web pages. Keep practicing and building projects to strengthen your skills.</p>
+                    <p><strong>Remember:</strong> The best way to learn HTML is by doing. Start building your own project!</p>
+                   </section>
+
+    </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Semua tambahan di bawah dibuat lewat JavaScript, jadi HTML di atas tidak berubah.
+
+        // 1. Toast Bootstrap
+        function toast(msg, ok = true) {
+            let box = document.getElementById('toastBox');
+            if (!box) { box = document.createElement('div'); box.id = 'toastBox'; box.className = 'toast-container position-fixed bottom-0 start-0 p-3'; document.body.appendChild(box); }
+            const t = document.createElement('div');
+            t.className = 'toast align-items-center border-0 text-bg-' + (ok ? 'success' : 'danger');
+            t.innerHTML = '<div class="d-flex"><div class="toast-body">' + msg + '</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
+            box.appendChild(t);
+            t.addEventListener('hidden.bs.toast', () => t.remove());
+            new bootstrap.Toast(t, { delay: 3000 }).show();
+        }
+
+        // 1b. Foto di tiap kartu (disisipkan lewat JS, klik untuk perbesar)
+        const U = id => 'https://images.unsplash.com/' + id + '?w=800&q=70';
+        const photos = {
+            2: ['photo-1498050108023-c5249f4df085', 'Writing code on a laptop'],
+            4: ['photo-1519389950473-47ba0277781c', 'Team working with laptops'],
+            5: ['photo-1461749280684-dccba630e2f6', 'Code on a monitor'],
+            6: ['photo-1456513080510-7bf3a84b82f8', 'Books and notes'],
+            7: ['photo-1517486808906-6ca8b3f04846', 'Students practicing'],
+            8: ['photo-1504384308090-c894fdcc538d', 'Workspace'],
+            9: ['photo-1434030216411-0b793f4b4173', 'Taking notes'],
+            10: ['photo-1488190211105-8b0e65b80b4e', 'Developer desk']
+        };
+        document.querySelectorAll('.card').forEach((card, i) => {
+            if (i === 0) {
+                const col = document.createElement('div'); col.className = 'collage';
+                col.innerHTML = '<img class="c1" src="' + U('photo-1434030216411-0b793f4b4173') + '" alt="Student taking notes"><img class="c2" src="' + U('photo-1531482615713-2afd69097998') + '" alt="Students studying together"><img class="c3" src="' + U('photo-1519389950473-47ba0277781c') + '" alt="Team with laptops"><span class="badge-y"><i class="bi bi-award-fill"></i> Beginner Friendly</span>';
+                col.querySelectorAll('img').forEach(im => im.addEventListener('error', () => im.remove()));
+                card.querySelector('.card-header-text').after(col); return;
+            }
+            const p = photos[i + 1]; if (!p) return;
+            const wrap = document.createElement('div'); wrap.className = 'photo-wrap';
+            const img = document.createElement('img'); img.src = U(p[0]); img.alt = p[1]; img.loading = 'lazy';
+            img.addEventListener('error', () => wrap.remove());
+            wrap.appendChild(img);
+            card.querySelector('.card-header-text').after(wrap);
+        });
+
+        // 2. Kartu bisa dibuka/tutup (Bootstrap Collapse): klik ikon atau judul
+        document.querySelectorAll('.card').forEach((card, i) => {
+            const icon = card.querySelector('.card-header-icon');
+            const text = card.querySelector('.card-header-text');
+            const wrap = document.createElement('div');
+            wrap.className = 'collapse show'; wrap.id = 'cardBody' + i;
+            [...card.children].filter(c => c !== icon && c !== text).forEach(c => wrap.appendChild(c));
+            card.appendChild(wrap);
+            const col = new bootstrap.Collapse(wrap, { toggle: false });
+            [icon, text].forEach(h => { h.title = 'Klik untuk buka / tutup'; h.addEventListener('click', () => col.toggle()); });
+            wrap.addEventListener('hide.bs.collapse', () => card.classList.add('is-closed'));
+            wrap.addEventListener('show.bs.collapse', () => card.classList.remove('is-closed'));
+        });
+
+        // 3. Tombol Copy di blok kode
+        document.querySelectorAll('.code-example').forEach(box => {
+            const code = box.querySelector('code'); if (!code) return;
+            const b = document.createElement('button'); b.type = 'button'; b.className = 'copy-btn'; b.textContent = 'Copy';
+            b.addEventListener('click', () => navigator.clipboard.writeText(code.innerText.trim()).then(() => { b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy', 1500); }));
+            box.appendChild(b);
+        });
+
+        // 4. Form: class Bootstrap + validasi
+        const form = document.querySelector('.sample-form');
+        form.querySelectorAll('input,textarea').forEach(e => e.classList.add('form-control'));
+        form.querySelector('select').classList.add('form-select');
+        form.querySelectorAll('input,select,textarea').forEach(e => e.required = true);
+        form.noValidate = true;
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            form.classList.add('was-validated');
+            if (form.checkValidity()) { toast('Form submitted. Thank you!'); form.reset(); form.classList.remove('was-validated'); }
+            else toast('Please fill in all fields correctly.', false);
+        });
+
+        // 5. Progress scroll + tombol ke atas
+        const bar = document.createElement('div'); bar.id = 'scrollBar'; document.body.appendChild(bar);
+        const top = document.createElement('button'); top.id = 'toTop'; top.type = 'button'; top.setAttribute('aria-label', 'Back to top'); top.textContent = '↑'; document.body.appendChild(top);
+        top.addEventListener('click', () => scrollTo({ top: 0 }));
+        addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - innerHeight;
+            bar.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
+            top.style.display = scrollY > 500 ? 'block' : 'none';
+        });
+
+        // 6. Top bar, navbar, hero slider, kartu fitur (semua dibuat lewat JS)
+        const secIds = { 1: 'about', 2: 'structure', 3: 'tags', 4: 'forms', 7: 'practice', 9: 'next' };
+        document.querySelectorAll('.card').forEach((c, i) => { if (secIds[i + 1]) c.id = secIds[i + 1]; });
+        const header = document.querySelector('.main-header'); header.id = 'home';
+        const topbar = document.createElement('div'); topbar.className = 'topbar d-none d-lg-block';
+        topbar.innerHTML = '<div class="container d-flex justify-content-between align-items-center"><span class="follow">Follow Us <a class="soc" href="#"><i class="bi bi-facebook"></i></a><a class="soc" href="#"><i class="bi bi-instagram"></i></a><a class="soc" href="#"><i class="bi bi-youtube"></i></a></span><div class="d-flex gap-4 py-2"><span><i class="bi bi-geo-alt-fill text-warning"></i> Tasikmalaya, West Java</span><a href="mailto:windy10224152@student.sttcipasung.ac.id"><i class="bi bi-envelope-fill text-warning"></i> windy10224152@student.sttcipasung.ac.id</a><span><i class="bi bi-telephone-fill text-warning"></i> +62 123 654 7898</span></div></div>';
+        const nav = document.createElement('nav'); nav.className = 'navbar navbar-expand-lg sticky-top site-nav';
+        nav.innerHTML = '<div class="container"><a class="navbar-brand" href="#home"><i class="bi bi-mortarboard-fill text-warning"></i> html<span>learn</span></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Menu"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="mainNav"><ul class="navbar-nav mx-auto"><li class="nav-item"><a class="nav-link" href="#home">Home</a></li><li class="nav-item"><a class="nav-link" href="#about">What is HTML</a></li><li class="nav-item"><a class="nav-link" href="#structure">Structure</a></li><li class="nav-item"><a class="nav-link" href="#tags">Tags</a></li><li class="nav-item"><a class="nav-link" href="#forms">Forms</a></li><li class="nav-item"><a class="nav-link" href="#practice">Practice</a></li></ul><button class="btn btn-orange" type="button" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</button></div></div>';
+        document.body.prepend(nav); document.body.prepend(topbar);
+
+        const cm = document.createElement('div'); cm.id = 'contactModal'; cm.className = 'modal fade'; cm.tabIndex = -1;
+        cm.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div class="modal-content" style="border-radius:24px"><div class="modal-header border-0"><h5 class="modal-title">Say hello 👋</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Questions about the lessons? Send a message with the form in the <a href="#forms" data-bs-dismiss="modal">Forms</a> section.</div><div class="modal-footer border-0"><button type="button" class="btn btn-orange" data-bs-dismiss="modal">Got it</button></div></div></div>';
+        document.body.appendChild(cm);
+        new bootstrap.ScrollSpy(document.body, { target: '#mainNav', rootMargin: '-90px 0px -55% 0px' });
+
+        // 7. Lightbox foto (Bootstrap Modal)
+        const lb = document.createElement('div');
+        lb.id = 'lightbox'; lb.className = 'modal fade'; lb.tabIndex = -1;
+        lb.innerHTML = '<div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><img alt=""></div></div>';
+        document.body.appendChild(lb);
+        const lbModal = new bootstrap.Modal(lb);
+        document.addEventListener('click', e => {
+            if (e.target.matches('.photo-wrap img, .collage img')) { const im = lb.querySelector('img'); im.src = e.target.src.replace('w=800', 'w=1400'); im.alt = e.target.alt; lbModal.show(); }
+        });
+
+        
+    });
+    </script>
+</body>
+</html>
